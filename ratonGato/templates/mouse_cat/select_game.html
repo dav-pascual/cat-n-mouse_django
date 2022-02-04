@@ -1,0 +1,47 @@
+{% extends "mouse_cat/base.html" %}
+
+{% block content %}
+<div id="content">
+    {% if not game_join %}
+        <h1>Select game</h1>
+        <p>
+            <form name="player_type" action="{% url 'select_game' %}" method="get">
+                {% csrf_token %}
+                {{ select_form.as_p }}
+                <input type="submit" name="submit" value="Filter"/><br>
+            </form>
+            {% if select_list %}
+                <ul>
+                {% for game in select_list %}
+                    {% if game.status == GameStatus.CREATED %}
+                        <li> <a href="{% url 'join_game' game.id %}" class="list-group-item">{{ game }}</a></li>
+                    {% elif game.status == GameStatus.ACTIVE %}
+                        <li> <a href="{% url 'selected_game' game.id %}" class="list-group-item list-group-item-success">{{ game }}</a></li>
+                    {% else %}
+                        <li> <a href="{% url 'play_game' game.id %}" class="list-group-item list-group-item-info">{{ game }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+                <br>
+                {% if select_list.has_previous %}
+                    <a href="?page={{ select_list.previous_page_number }}" class="btn btn-primary" role="button">Previous</a>
+                {% else %}
+                    <a class="btn btn-primary" role="button" disabled="true">Previous</a>
+                {% endif %}
+
+                {% if select_list.has_next %}
+                    <a href="?page={{ select_list.next_page_number }}" class="btn btn-primary" role="button">Next</a>
+                {% else %}
+                    <a class="btn btn-primary" role="button" disabled="true">Next</a>
+                {% endif %}
+            {%  else %}
+                No games available to select
+            {% endif %}
+        </p>
+    {%  else %}
+        <p><b>{{ game_join.mouse_user.username }}</b> succesfully joined to game <b>{{ game_join.id }}</b>. The game can start!!!</p>
+    {% endif %}
+
+    <p><a href="{% url 'landing' %}" class="btn btn-primary" role="button">Return to homepage</a></p>
+</div>
+{% endblock content %}

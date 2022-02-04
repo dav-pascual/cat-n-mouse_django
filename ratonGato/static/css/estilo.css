@@ -1,0 +1,19 @@
+/* Pintar el tablero con casillas blancas y negras */
+tr:nth-child(odd) td:nth-child(even), tr:nth-child(even) td:nth-child(odd) {
+    background-color: #1f3d7a;
+}
+tr:nth-child(odd) td:nth-child(odd), tr:nth-child(even) td:nth-child(even){
+    background-color: #2e5cb8;
+}
+
+/* Estilo general de las casillas */
+td {
+  width:40px;
+  height:45px;
+  border:1px solid #142952;
+  text-align:center;
+}
+
+li {
+  list-style: none;
+}

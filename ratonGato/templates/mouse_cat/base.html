@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<html>
+<head>
+    {% block extra_css %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilo.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    {% endblock extra_css %}
+
+    {% block extra_js %}
+
+    {% endblock extra_js %}
+
+    {% block extra_head %}
+
+    {% endblock extra_head %}
+    <title>{% block title %}PSI 2019-2020: Example of application{% endblock %}</title>
+</head>
+
+<body class="container">
+    <div class="page-header">
+        <div class="jumbotron">
+            {% block atitle %}<h1>Mouse vs. Cats application</h1>{% endblock atitle %}
+        </div>
+
+
+        {% if request.user.is_authenticated %}
+            Welcome <span class="username">{{ request.user.username }}</span>!
+        {% endif %}
+
+    </div>
+
+    <hr/>
+
+    <div class="container-fluid">
+      <div class="row content">
+      <div class="col-lg-3 sidenav">
+        <ul class="nav nav-pills nav-stacked">
+            {% if user.is_authenticated %}
+                <!--Show these links when the user is NOT logged in-->
+                <li><a href="{% url 'logout' %}" class="btn btn-primary" role="button">Log Out</a></li>
+                <li><a href="{% url 'create_game' %}" class="btn btn-primary" role="button">Create game</a></li>
+                <li><a href="{% url 'select_game' %}" class="btn btn-primary" role="button">Select game</a></li>
+            {% else %}
+                <!--Show these links when the user is logged in-->
+                <li><a href="{% url 'login' %}" class="btn btn-primary" role="button">Log In</a></li>
+                <li><a href="{% url 'signup' %}" class="btn btn-primary" role="button">Sign Up</a></li>
+            {% endif %}
+        </ul>
+      </div>
+
+
+    <div class="col-lg-9">
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        {% endfor %}
+    {% endif %}
+
+        {% block content %}
+        {% endblock content %}
+    </div>
+</div>
+</div>
+
+
+</body>
+</html>

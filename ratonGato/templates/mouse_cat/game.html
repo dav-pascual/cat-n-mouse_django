@@ -1,0 +1,122 @@
+{% extends "mouse_cat/base.html" %}
+
+{% block content %}
+<div id="content">
+    {% if game.status == GameStatus.FINISHED %}
+        <h1>Game over!</h1>
+    {% else %}
+        <h1>Play</h1>
+    {% endif %}
+    <p>Game: <b>{{ game.id }}</b></p>
+    <form id="move_form" method="post" action="{% url 'move' %}">
+        {% csrf_token %}
+        <p>
+            Cats: <b>{{ game.cat_user.username }}</b>
+            {% if game.cat_user.id == request.user.id %}
+                <blockquote class="cat">
+                    {% if game.status == GameStatus.FINISHED %}
+                        {% if game.winner == GameWinner.CAT %}
+                            Game is over! YOU WIN.
+                        {% elif game.winner == GameWinner.MOUSE %}
+                            Game is over! {{ game.mouse_user.username }} wins.
+                        {% endif %}
+                    {% else %}
+                        {% if game.cat_turn %}
+                            Your turn
+                            {{ move_form }}
+                        {% else %}
+                            Waiting for the mouse...
+                            <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
+                        {% endif %}
+                    {% endif %}
+                </blockquote>
+            {% endif %}
+        </p>
+        <p>
+            Mouse: <b>{{ game.mouse_user.username }}</b>
+            {% if game.mouse_user.id == request.user.id %}
+                <blockquote class="mouse">
+                    {% if game.status == GameStatus.FINISHED %}
+                        {% if game.winner == GameWinner.CAT %}
+                            Game is over! {{ game.cat_user.username }} wins.
+                        {% elif game.winner == GameWinner.MOUSE %}
+                            Game is over! YOU WIN.
+                        {% endif %}
+                    {% else %}
+                        {% if not game.cat_turn %}
+                            Your turn
+                            {{ move_form }}
+                        {% else %}
+                            Waiting for the cat...
+                            <a style="margin-left:20px;font-weight:normal" href="{% url 'show_game' %}">Refresh</a>
+                        {% endif %}
+                    {% endif %}
+                </blockquote>
+            {% endif %}
+        </p>
+    </form>
+
+    {% if board %}
+        <table id="chess_board">
+        {% for item in board %}
+            {% if forloop.counter0|divisibleby:8 %}<tr>{% endif %}
+              {%if item == 0 %}<td id="{{ forloop.counter0}}"></td>
+              {% elif item == 1 %} <td id="{{ forloop.counter0}}"><a id='cat'> &#128008;</a></td>
+              {% else %} <td id="{{ forloop.counter0}}"><a id='mouse'> &#128001; </a></td>
+              {% endif %}
+            {% if forloop.counter|divisibleby:8 or forloop.last %}</tr>{% endif %}
+        {% endfor %}
+        </table>
+
+      <script>
+      // Si la partida esta finalizada no se puede hacer drag
+      {% if game.status == GameStatus.FINISHED %}
+      // Si eres cat_user y es tu turno, puedes hacer drag de los gatos
+      {% elif game.cat_user.id == request.user.id and game.cat_turn%}
+          $('a#cat').draggable({ containment: "table", revert: 'invalid' });
+      // Si eres mouse_user y es tu turno, puedes hacer drag del raton
+      {% elif game.mouse_user.id == request.user.id and not game.cat_turn%}
+          $('a#mouse').draggable({ containment: "table", revert: 'invalid' });
+      {% else %}
+      {% endif %}
+
+      // En cada casilla del tablero se puede hacer drop
+      $('td').droppable({
+          drop: function(ev, ui) {
+              var dropped = ui.draggable;
+              var droppedOn = $(this);
+              // Deshabilitamos el drop en la casilla donde has movido
+              $(droppedOn).droppable("disable");
+              // Habilitamos el drop en la casilla origen
+              $(dropped).parent().droppable("enable");
+              origin = $(dropped).parent().attr('id');
+              $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
+              // Mandamos el origen y el destino
+              mandarInfo(origin,$(droppedOn).attr('id'));
+          },
+          tolerance: 'fit'
+      });
+      //En los que no estan vacios no se puede hacer drop
+      $('td').not('td:empty').droppable("disable");
+      //En las casillas negras no se puede hacer drop
+      $('tr:nth-child(odd) td:nth-child(even)').droppable("disable");
+      $('tr:nth-child(even) td:nth-child(odd)').droppable("disable");
+
+      /** @author: David Pascual
+       *  @param origen y target
+       *  Funcion para mandar informacion del drag and drop
+       */
+      function mandarInfo(origin,target){
+        // Establecemos los valores en el move_form
+        document.getElementsByName('origin')[0].value = origin
+        document.getElementsByName('target')[0].value = target
+        // Hacemos submit del move_form
+        document.forms[0].submit()
+      }
+    </script>
+
+    {% endif %}
+    <br>
+    <p><a href="{% url 'landing' %}" class="btn btn-primary" role="button">Return to homepage</a></p>
+</div>
+{% endblock content %}

@@ -1,0 +1,113 @@
+{% extends "mouse_cat/base.html" %}
+
+{% block content %}
+<div id="content">
+  {% csrf_token %}
+
+    <h1>Play</h1>
+    <p>Game: <b>{{ game.id }}</b></p>
+    <p>Cats: <b>{{ game.cat_user.username }}</b></p>
+    <p>Mouse: <b>{{ game.mouse_user.username }}</b></p>
+    <button id="previous" disabled="true" class="btn btn-primary" onclick="move(-1)"> Previous </button>
+    <button id="next" class="btn btn-primary" onclick="move(1)"> Next </button>
+    <button class="btn btn-primary" onclick="stop()"> Stop </button>
+    <button class="btn btn-primary" onclick="play()"> Play </button>
+
+    <hr/>
+
+    {% if board %}
+        <table id="chess_board">
+        {% for item in board %}
+            {% if forloop.counter0|divisibleby:8 %}<tr>{% endif %}
+              {%if item == 0 %}<td id="{{ forloop.counter0}}"></td>
+              {% elif item == 1 %} <td id="{{ forloop.counter0}}">&#128008;</td>
+              {% else %} <td id="{{ forloop.counter0}}">&#128001;</td>
+              {% endif %}
+            {% if forloop.counter|divisibleby:8 or forloop.last %}</tr>{% endif %}
+        {% endfor %}
+        </table>
+
+    <script>
+        /** @author: David Pascual
+         *  @param move
+         *  Funcion para realizar un movimiento.
+         */
+        function move(move){
+          // Si se estaba reproduciendo, lo paramos
+          stop();
+
+          // Establecemos el token csrf ala peticion ajax
+          var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+          function csrfSafeMethod(method) {
+              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+          }
+          $.ajaxSetup({
+              beforeSend: function (xhr, settings) {
+                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+              }
+          });
+
+          // Realizamos una peticion POST mediante AJAX
+          $.ajax({
+              type: "POST",
+              url: "{% url 'get_move' %}",
+              data: {'shift': move},
+              success: function(res){
+                var dicc = JSON.parse(res);
+                var text;
+                // Si es el turno del gato, actualizaremos con su imagen
+                if(dicc['is_cat'] == true)
+                  text = "&#128008;";
+                else
+                  text = "&#128001;";
+                // Actualizamos tablero
+                document.getElementById(dicc['origin']).innerHTML = "";
+                document.getElementById(dicc['target']).innerHTML = text;
+
+                /* Deshabilitamos los botones correspondientes y mostramos
+                al ganador si ya no hay mas movimientos */
+                if(dicc['next'] == false) {
+                  document.getElementById('next').disabled = true;
+                  stop();
+                  alert(dicc['winner']+ " wins!");
+                }
+                else {
+                  document.getElementById('next').disabled = false;
+                }
+                if(dicc['previous'] == false) {
+                  document.getElementById('previous').disabled = true;
+                }
+                else {
+                  document.getElementById('previous').disabled = false;
+                }
+              },
+          });
+        }
+
+        // Variable para comprobar si ya se ha establecido el intervalo
+        var interval = -1;
+
+        /** @author: David Pascual
+         *  Funcion para reproducir.
+         */
+        function play(){
+            move(1);
+            if (interval == -1) interval = setInterval(play, 2000);
+        }
+
+        /** @author: David Pascual
+         *  Funcion para parar la reproduccion
+         */
+        function stop(){
+            clearInterval(interval);
+            interval = -1;
+        }
+    </script>
+
+    {% endif %}
+    <br>
+    <p><a href="{% url 'landing' %}" class="btn btn-primary" role="button">Return to homepage</a></p>
+</div>
+{% endblock content %}

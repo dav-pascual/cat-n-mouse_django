@@ -1,0 +1,27 @@
+#Clean migrations
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+
+#BD
+dropdb -U alumnodb -h localhost ratongato
+createdb -U alumnodb -h localhost ratongato
+sudo -u postgres psql
+Postgres# alter user alumnodb CREATEDB;
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py createsuperuser
+python3 manage.py runserver
+
+#Tests
+python3 ./manage.py test datamodel.tests_models --keepdb -v 3
+python3 ./manage.py test logic.tests_function --keepdb -v 3
+python3 ./manage.py test logic.tests_services_P4 --keepdb -v 3
+python3 ./manage.py test datamodel.tests_additional_P4 --keepdb -v 3
+python3 ./manage.py test logic.tests_additional_P4 --keepdb -v 3
+coverage erase
+coverage run --omit="*/test*" --source=datamodel ./manage.py test datamodel.tests_models
+coverage run -a --omit="*/test*" --source=logic ./manage.py test logic.tests_function
+coverage run -a --omit="*/test*" --source=logic ./manage.py test logic.tests_services_P4
+coverage run -a --omit="*/test*" --source=datamodel ./manage.py test datamodel.tests_additional_P4
+coverage run -a --omit="*/test*" --source=logic ./manage.py test datamodel.tests_additional_P4
+coverage report -m -i

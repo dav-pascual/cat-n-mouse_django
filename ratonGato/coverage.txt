@@ -1,0 +1,129 @@
+"""
+@author: David Pascual
+"""
+
+-Informe tests_models:
+
+Name                                              Stmts   Miss  Cover   Missing
+-------------------------------------------------------------------------------
+datamodel/__init__.py                                 0      0   100%
+datamodel/admin.py                                    5      0   100%
+datamodel/apps.py                                     3      3     0%   1-5
+datamodel/constants.py                                2      0   100%
+datamodel/migrations/0001_initial.py                  7      0   100%
+datamodel/migrations/0002_counter.py                  4      0   100%
+datamodel/migrations/0003_auto_20191123_2140.py       5      0   100%
+datamodel/migrations/0004_auto_20191123_2141.py       5      0   100%
+datamodel/migrations/0005_auto_20191123_2152.py       5      0   100%
+datamodel/migrations/0006_auto_20191123_2216.py       5      0   100%
+datamodel/migrations/0007_auto_20191124_1739.py       6      0   100%
+datamodel/migrations/0008_auto_20191125_1933.py       6      0   100%
+datamodel/migrations/0009_auto_20191126_1115.py       5      0   100%
+datamodel/migrations/0010_game_winner.py              4      0   100%
+datamodel/migrations/__init__.py                      0      0   100%
+datamodel/models.py                                 173     28    84%   16, 29, 43, 59, 67, 76, 139, 148, 152, 157-158, 160-161, 207, 211, 216, 232, 259, 263, 270-276, 283, 288, 295, 300
+datamodel/urls.py                                     4      4     0%   1-6
+datamodel/views.py                                    0      0   100%
+-------------------------------------------------------------------------------
+TOTAL                                               239     35    85%
+
+
+-Informe tests_function:
+
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+logic/__init__.py                  0      0   100%
+logic/admin.py                     0      0   100%
+logic/apps.py                      3      3     0%   1-5
+logic/forms.py                    43     17    60%   22-27, 30-35, 38-42
+logic/migrations/__init__.py       0      0   100%
+logic/models.py                    0      0   100%
+logic/urls.py                      3      0   100%
+logic/views.py                   330    295    11%   24-30, 36-42, 47-49, 57, 68-93, 104-124, 135-151, 161-168, 176-346, 354-393, 404-467, 471-524
+------------------------------------------------------------
+TOTAL                            379    315    17%
+
+
+-Informe tests_services_P4:
+
+Name                           Stmts   Miss  Cover   Missing
+------------------------------------------------------------
+logic/__init__.py                  0      0   100%
+logic/admin.py                     0      0   100%
+logic/apps.py                      3      3     0%   1-5
+logic/forms.py                    43     17    60%   22-27, 30-35, 38-42
+logic/migrations/__init__.py       0      0   100%
+logic/models.py                    0      0   100%
+logic/urls.py                      3      0   100%
+logic/views.py                   330    260    21%   24-30, 36-42, 47-49, 57, 68-93, 104-124, 135-151, 161-168, 176-346, 354-393, 404-467, 486, 514
+------------------------------------------------------------
+TOTAL                            379    280    26%
+
+
+-Informe combinado:
+
+Name                                              Stmts   Miss  Cover   Missing
+-------------------------------------------------------------------------------
+datamodel/__init__.py                                 0      0   100%
+datamodel/admin.py                                    5      0   100%
+datamodel/apps.py                                     3      3     0%   1-5
+datamodel/constants.py                                2      0   100%
+datamodel/migrations/0001_initial.py                  7      0   100%
+datamodel/migrations/0002_counter.py                  4      0   100%
+datamodel/migrations/0003_auto_20191123_2140.py       5      0   100%
+datamodel/migrations/0004_auto_20191123_2141.py       5      0   100%
+datamodel/migrations/0005_auto_20191123_2152.py       5      0   100%
+datamodel/migrations/0006_auto_20191123_2216.py       5      0   100%
+datamodel/migrations/0007_auto_20191124_1739.py       6      0   100%
+datamodel/migrations/0008_auto_20191125_1933.py       6      0   100%
+datamodel/migrations/0009_auto_20191126_1115.py       5      0   100%
+datamodel/migrations/0010_game_winner.py              4      0   100%
+datamodel/migrations/__init__.py                      0      0   100%
+datamodel/models.py                                 173     28    84%   16, 29, 43, 59, 67, 76, 139, 148, 152, 157-158, 160-161, 207, 211, 216, 232, 259, 263, 270-276, 283, 288, 295, 300
+datamodel/urls.py                                     4      4     0%   1-6
+datamodel/views.py                                    0      0   100%
+logic/__init__.py                                     0      0   100%
+logic/admin.py                                        0      0   100%
+logic/apps.py                                         3      3     0%   1-5
+logic/forms.py                                       43     17    60%   22-27, 30-35, 38-42
+logic/migrations/__init__.py                          0      0   100%
+logic/models.py                                       0      0   100%
+logic/urls.py                                         3      0   100%
+logic/views.py                                      330    260    21%   24-30, 36-42, 47-49, 57, 68-93, 104-124, 135-151, 161-168, 176-346, 354-393, 404-467, 486, 514
+-------------------------------------------------------------------------------
+TOTAL                                               618    315    49%
+
+
+-Informe combinado + tests adicionales P4 (hay un fichero en la carpeta datamodel y otro en la carpeta logic):
+
+Name                                              Stmts   Miss  Cover   Missing
+-------------------------------------------------------------------------------
+datamodel/__init__.py                                 0      0   100%
+datamodel/admin.py                                    5      0   100%
+datamodel/apps.py                                     3      3     0%   1-5
+datamodel/constants.py                                2      0   100%
+datamodel/migrations/0001_initial.py                  7      0   100%
+datamodel/migrations/0002_counter.py                  4      0   100%
+datamodel/migrations/0003_auto_20191123_2140.py       5      0   100%
+datamodel/migrations/0004_auto_20191123_2141.py       5      0   100%
+datamodel/migrations/0005_auto_20191123_2152.py       5      0   100%
+datamodel/migrations/0006_auto_20191123_2216.py       5      0   100%
+datamodel/migrations/0007_auto_20191124_1739.py       6      0   100%
+datamodel/migrations/0008_auto_20191125_1933.py       6      0   100%
+datamodel/migrations/0009_auto_20191126_1115.py       5      0   100%
+datamodel/migrations/0010_game_winner.py              4      0   100%
+datamodel/migrations/__init__.py                      0      0   100%
+datamodel/models.py                                 173     17    90%   16, 30, 44, 140, 149, 153, 209, 213, 218, 234, 261, 265, 278, 285, 290, 297, 302
+datamodel/urls.py                                     4      4     0%   1-6
+datamodel/views.py                                    0      0   100%
+logic/__init__.py                                     0      0   100%
+logic/admin.py                                        0      0   100%
+logic/apps.py                                         3      3     0%   1-5
+logic/forms.py                                       43     17    60%   22-27, 30-35, 38-42
+logic/migrations/__init__.py                          0      0   100%
+logic/models.py                                       0      0   100%
+logic/urls.py                                         3      0   100%
+logic/views.py                                      333    263    21%   23-29, 35-41, 46-48, 52-54, 62, 73-98, 109-129, 140-156, 166-173, 182-360, 368-410, 421-487, 511, 544
+-------------------------------------------------------------------------------
+TOTAL                                               621    307    51%
+
